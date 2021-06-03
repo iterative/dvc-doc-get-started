@@ -1,0 +1,31 @@
+prepare:
+  seed: 20210428
+  remix: false
+  remix_split: 0.20
+
+preprocess:
+  seed: 20210428
+  normalize: true
+  shuffle: false
+  add_noise: false
+  noise_amount: 0.0004
+  noise_s_vs_p: 0.5
+
+train:
+  seed: 20210428
+  validation_split: 0.2
+  epochs: 10
+  batch_size: 128
+
+model:
+  name: mlp
+  optimizer: Adam
+  mlp:
+    units: 16
+    activation: relu
+  cnn:
+    dense_units: 128
+    activation: relu
+    conv_kernel_size: 3
+    conv_units: 32
+    dropout: 0.5
