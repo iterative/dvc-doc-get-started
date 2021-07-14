@@ -1,0 +1,59 @@
+stages:
+  prepare:
+    cmd: python3 src/prepare.py
+    deps:
+    - data/fashion-mnist/raw/
+    - src/prepare.py
+    params:
+    - prepare.remix
+    - prepare.remix_split
+    - prepare.seed
+    outs:
+    - data/fashion-mnist/prepared
+  preprocess:
+    cmd: python3 src/preprocess.py
+    deps:
+    - data/fashion-mnist/prepared/
+    - src/preprocess.py
+    params:
+    - preprocess.add_noise
+    - preprocess.noise_amount
+    - preprocess.noise_s_vs_p
+    - preprocess.normalize
+    - preprocess.seed
+    - preprocess.shuffle
+    outs:
+    - data/fashion-mnist/preprocessed/
+  train:
+    cmd: python3 src/train.py
+    deps:
+    - data/fashion-mnist/preprocessed/
+    - src/models.py
+    - src/train.py
+    params:
+    - model.cnn.conv_kernel_size
+    - model.cnn.conv_units
+    - model.cnn.dense_units
+    - model.cnn.dropout
+    - model.mlp.activation
+    - model.mlp.units
+    - model.name
+    - model.optimizer
+    - train.batch_size
+    - train.epochs
+    - train.seed
+    - train.validation_split
+    outs:
+      - models/fashion-mnist/model.h5:
+          checkpoint: true
+    plots:
+    - logs.csv:
+        cache: false
+  evaluate:
+    cmd: python3 src/evaluate.py
+    deps:
+    - models/fashion-mnist/model.h5
+    - src/evaluate.py
+    metrics:
+    - metrics.json:
+        cache: false

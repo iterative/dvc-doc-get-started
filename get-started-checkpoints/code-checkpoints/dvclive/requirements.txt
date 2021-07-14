@@ -1,0 +1,5 @@
+tensorflow>=2.5,<2.6
+ruamel.yaml
+dvc>=2.1
+dvclive
+
